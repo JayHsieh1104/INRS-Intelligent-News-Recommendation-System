@@ -1,0 +1,28 @@
+.App {
+  width: 100%;
+  height: fit-content;
+}
+
+.LeftNav {
+  width: 15%;
+  margin: 0 auto;
+  position: fixed;
+  padding: 1% 1%;
+  /* background-color: #353A40; */
+}
+
+.CentralBlock {
+  width: 60%;
+  margin-left: 15%;
+  float: left;
+  overflow: auto;
+}
+
+.RightNav {
+  margin-top: 1%;
+  margin-left: 77%;
+  width: 20%;
+  float: left;
+  position: fixed;
+  border-radius: 10px;
+}
