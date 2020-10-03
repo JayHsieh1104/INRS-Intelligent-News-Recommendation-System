@@ -17,7 +17,7 @@ class LeftNav extends React.Component {
             <img
               style={{ height: "100px" }}
               alt="News img"
-              src="http://jayhsieh.freevar.com/images/Logo no background black news.png"
+              src={require("../images/Logo_no_background_black_news.png")}
             />
           </Navbar.Brand>
           <Nav style={{ fontSize: "20px" }} className="mr-auto, flex-column">
