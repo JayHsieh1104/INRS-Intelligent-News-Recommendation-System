@@ -1,3 +1,4 @@
+import nltk
 import json
 import spacy
 import random
@@ -8,7 +9,8 @@ import pandas as pd
 
 from newsapi.newsapi_client import NewsApiClient
 from rake_nltk import Rake
-
+from nltk.corpus import stopwords 
+from nltk.tokenize import word_tokenize 
 
 global connection
 
@@ -33,6 +35,160 @@ def get_news_data(_category='general', _language='en', _country='us', _pagesize=
 
 
 def parse_news_data(top_headlines):
+    articles = raw_news_list['articles']
+    df = pd.DataFrame(articles)
+    df = df.dropna(subset=['source', 'title',
+                        'description', 'url', 'urlToImage', 'content'])
+    df = df[df['description'] != ''].reset_index(drop=True)
+    df['source'] = [source['name'] for source in df['source']]
+
+    # Remove source name in title
+    df['title'] = [df.loc[title_row,
+                        'title'][:df.loc[title_row, 'title'].rfind('-')-1] for title_row in range(len(df))]
+    # Remove the endig of the content column
+    df['content'] = [df.loc[content_row,
+                            'content'][:df.loc[content_row, 'content'].rfind('[')-1] for content_row in range(len(df))]
+    # Process author column
+    removelist = [', CNN Business', ' | The Oregonian/OregonLive', ', CNN', ' | NJ Advance Media for NJ.com', ' | NJ Advance Media For NJ.com',
+                'WGN-TV', 'By ', ' For Dailymail.com', ' For Daily Mail Australia', 'Associated Press', ' | For lehighvalleylive.com', ' (NEWS CENTER Maine)']
+    for author_row in range(len(df)):
+        author, source = df.loc[author_row, 'author'], df.loc[author_row, 'source']
+        # remove author if author name is the same as source name or if it contains staff
+        df.loc[author_row, 'author'] = None if source == author else author
+        if 'Staff' in str(author) or 'staff' in str(author):
+            df.loc[author_row, 'author'] = None
+        # remove redundant words
+        for r in removelist:
+            df.loc[author_row, 'author'] = author.replace(
+                r, '') if r in str(author) else df.loc[author_row, 'author']
+
+    nlp = spacy.load("en_core_web_sm")
+    # add PyTextRank to the spaCy pipeline
+    tr = pytextrank.TextRank()
+    nlp.add_pipe(tr.PipelineComponent, name="textrank", last=True)
+
+    for textrow in range(len(df)):
+        title_text, desc_text = df['title'][textrow], df['description'][textrow]
+        title_doc = nlp(title_text)
+        title_phraselist = [str(p) for p in title_doc._.phrases]
+
+    # load a spaCy model, depending on language, scale, etc.
+    nlp = spacy.load("en_core_web_sm")
+    # add PyTextRank to the spaCy pipeline
+    tr = pytextrank.TextRank()
+    nlp.add_pipe(tr.PipelineComponent, name="textrank", last=True)
+
+    for textrow in range(len(df)):
+        title_text, desc_text = df['title'][textrow], df['description'][textrow]
+        title_doc = nlp(title_text)
+        title_phraselist = [str(p) for p in title_doc._.phrases]
+        if len(title_phraselist) < 3:
+            r = Rake()
+            r.extract_keywords_from_text(title_text)
+            rakekeywords = r.get_ranked_phrases()
+            title_phraselist += rakekeywords
+        tag1 = tag2 = tag3 = None
+        if isinstance(desc_text, type(None)) is False:  # if desc is not empty
+            desc_doc = nlp(desc_text)
+            desc_phraselist = [str(p) for p in desc_doc._.phrases]
+            # compare the keywords from title and description and assign the more significant one
+            if len(set(title_phraselist) & set(desc_phraselist)) == 1:
+                tag1 = list(set(title_phraselist) & set(desc_phraselist))[0]
+                title_phraselist.remove(tag1)
+                tag2 = title_phraselist[0] if len(
+                    title_phraselist) > 0 else None
+                tag3 = title_phraselist[1] if len(
+                    title_phraselist) > 1 else None
+
+            elif len(set(title_phraselist) & set(desc_phraselist)) == 2:
+                tag1, tag2 = list(set(title_phraselist) & set(desc_phraselist))[
+                    0], list(set(title_phraselist) & set(desc_phraselist))[1]
+                title_phraselist.remove(tag1)
+                title_phraselist.remove(tag2)
+                tag3 = title_phraselist[0] if len(
+                    title_phraselist) > 0 else None
+
+            elif len(set(title_phraselist) & set(desc_phraselist)) == 3:
+                tag1, tag2, tag3 = list(set(title_phraselist) & set(desc_phraselist))[0], list(set(
+                    title_phraselist) & set(desc_phraselist))[1], list(set(title_phraselist) & set(desc_phraselist))[2]
+
+            else:  # not even one overlapped
+                tag1 = title_phraselist[0] if len(
+                    title_phraselist) > 0 else None
+                tag2 = title_phraselist[1] if len(
+                    title_phraselist) > 1 else None
+                tag3 = title_phraselist[2] if len(
+                    title_phraselist) > 2 else None
+
+            df.loc[textrow, 'tag1'], df.loc[textrow,
+                                            'tag2'], df.loc[textrow, 'tag3'] = tag1, tag2, tag3
+        else:
+            tag1 = title_phraselist[0] if len(title_phraselist) > 0 else None
+            tag2 = title_phraselist[1] if len(title_phraselist) > 1 else None
+            tag3 = title_phraselist[2] if len(title_phraselist) > 2 else None
+            df.loc[textrow, 'tag1'], df.loc[textrow,
+                                            'tag2'], df.loc[textrow, 'tag3'] = tag1, tag2, tag3
+    # Start keyword matching between article pair
+    # Remove stop words to avoid meaningless keywords matching
+    stop_words = set(stopwords.words('english')) 
+
+    for col in ['tag1','tag2','tag3']:
+        df[col]= df[col].fillna('none')
+
+    for col in ['tag1','tag2','tag3']:
+        for row in range(len(df)):
+    #         print(df.loc[row,col])
+            df.loc[row,col] = [w for w in word_tokenize(df.loc[row,col])  if not w in stop_words] 
+    #         print(row,col)
+
+    df['tags'] = df['tag1']+df['tag2']+df['tag3']
+
+
+    def intersection(lst1, lst2):
+        lst3 = [value for value in lst1 if value in lst2]
+        return lst3
+
+    # Find the related articles by checking if there are overlapped tags
+    related_list = []
+    for row in range(len(df)):
+        related_comparerows = []
+        for compare_row in range(len(df)):
+            if compare_row != row:
+                if len(intersection(df.loc[row, 'tags'], df.loc[compare_row, 'tags'])) > 0:
+                    related_comparerows.append(compare_row)
+        related_list.append(related_comparerows)
+
+    # Randomly choose one related article if no overlapped tags
+    for num in range(len(related_list)):
+        if len(related_list[num]) == 0:
+            choosing_range = list(range(1, num)) + \
+                list(range(num+1, len(related_list)))
+            related_list[num] += random.sample(choosing_range, 1)
+        if len(related_list[num]) > 5:
+            choosing_range = list(range(1, num)) + \
+                list(range(num+1, len(related_list)))
+            related_list[num] = random.sample(choosing_range, 5)
+    df['related_num'] = related_list
+
+    # drop the unneeded columns
+    df = df.drop(['tag1', 'tag2', 'tag3', 'tags',
+                'related_num', 'description'], axis=1)
+    # create relative dictionaries
+    df['records'] = df.drop(
+        ['content', 'urlToImage', 'author'], axis=1).to_dict('records')
+    total_relative_list = []
+    for art_num in range(len(df)):
+        current_relative_list = [df.loc[rel, 'records']
+                                for rel in related_list[art_num]]
+        total_relative_list.append(current_relative_list)
+    df['related_articles'] = total_relative_list
+    df = df.drop(['records'], axis=1)
+
+    parsed_news_list = df.to_dict('records')
+    return(parsed_news_list)
+
+
+# def parse_news_data(top_headlines):
     articles = top_headlines['articles']
     df = pd.DataFrame(articles)
     df = df.dropna(subset=['source', 'title',
