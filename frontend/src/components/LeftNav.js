@@ -13,7 +13,7 @@ class LeftNav extends React.Component {
           variant="light"
           className="flex-column"
         >
-          <Navbar.Brand href="#home">
+          <Navbar.Brand href="/">
             <img
               style={{ height: "100px" }}
               alt="News img"
