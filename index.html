@@ -87,8 +87,8 @@
           INRS - Intelligent News Recommendation System
         </div>
         <div class="masthead-subheading">
-          A news aggregator to provide users with relevant article
-          recommendations.
+          Get news recommendations from the most trustworthy sources all in one
+          place
         </div>
         <a
           class="btn btn-primary btn-xl text-uppercase js-scroll-trigger"
@@ -106,21 +106,20 @@
           <h3 class="section-subheading text-muted">
             <div>
               Nowadays, an increasing number of newspaper readers migrate to
-              online sources, where they can actively seek the information they
-              need from various platforms. However, overwhelming information and
-              news actually hinder people from staying well informed. This
-              motivated me to build a news aggregator website that consolidates
-              and organizes content from pre-selected reliable news sites as
-              well as provides content-based article recommendations
+              online sources, where users can actively seek information from
+              various platforms. However, overwhelming information and news
+              actually hinder people from staying well informed. This fact
+              motivated us to build INRS, a news aggregator consolidating and
+              organizing content from pre-selected reliable news sites.
             </div>
             <br />
             <div>
-              With the news aggregator, users do not need to visit separate
-              websites for the latest content. Instead, they can easily access
-              updates all in one place and get relevant article recommendations
-              after finishing an article. It efficiently reduces effort in
-              seeking news and users can obtain a comprehensive understanding of
-              the news from different media viewpoints.
+              With INRS, you no longer need to visit separate websites for the
+              latest content. All you need to do now is choose the topic you’re
+              interested in and then enjoy news from different sources along
+              with relevant news recommendations provided by INRS. We aim at
+              reducing user effort in seeking news and presenting news from
+              different media viewpoints.
             </div>
           </h3>
         </div>
@@ -132,7 +131,8 @@
             </span>
             <h4 class="my-3">News Integration</h4>
             <p class="text-muted">
-              Organize news from 100+ well-known online publishers
+              Organize and display news from about 50 well-known online news
+              publishers
             </p>
           </div>
           <div class="col-md-4">
@@ -142,8 +142,8 @@
             </span>
             <h4 class="my-3">Intelligent Recommendations</h4>
             <p class="text-muted">
-              Recommend relevant articles based on semantic analysis and machine
-              learning method
+              Deliver relevant news recommendations based on semantic analysis
+              and machine learning methods
             </p>
           </div>
           <div class="col-md-4">
@@ -151,10 +151,10 @@
               <i class="fas fa-circle fa-stack-2x text-primary"></i>
               <i class="fas fa-clock fa-stack-1x fa-inverse"></i>
             </span>
-            <h4 class="my-3">Latest News</h4>
+            <h4 class="my-3">Real-time News</h4>
             <p class="text-muted">
-              Provide users with the latest news from our real-time news
-              database
+              Provide the latest news covering business, entertainment, health,
+              science, sports, and technology
             </p>
           </div>
         </div>
@@ -167,7 +167,9 @@
           <h2 class="section-heading text-uppercase">Guide</h2>
           <h3 class="section-subheading text-muted">
             <a class="" href="https://inrs-frontend.wl.r.appspot.com/"
-              ><span style="color: rgb(62, 110, 154);">Explore INRS Now!</span></a
+              ><span style="color: rgb(62, 110, 154)"
+                >Explore INRS Now!</span
+              ></a
             >
           </h3>
           <img
@@ -226,7 +228,7 @@
                 >
                   <h4 class="text-dark">Data</h4>
                   <p class="mb-0 text-dark-50">
-                    We parsed 300+ news articles from the RESTful APIs of
+                    We parsed 300+ news articles from the RESTful APIs of 50+
                     well-known online news publishers, such as CNN, Fox News,
                     CBS News, Los Angeles Times, and so on.
                   </p>
@@ -248,13 +250,16 @@
                 <div
                   class="project-text w-100 my-auto text-center text-lg-left"
                 >
-                  <h4 class="text-dark">Approach (Unfinished)</h4>
+                  <h4 class="text-dark">Approach</h4>
                   <p class="mb-0 text-dark-50">
-                    We start from performing semantic analysis on the articles fetched from news APIs. Then we apply natural language processing and machine learning methods to analyze the fec. 
-                    We trained on more than 110,000 X-ray images from 30,805
-                    unique patients with 14 different labeled diseases from NIH
-                    dataset as well as 266 images from newly aggregated COVID-19
-                    chest X-ray dataset.
+                    A python script will fetch news data from the news APIs of
+                    the pre-selected publishers. With natural language
+                    processing and machine learning methods, the script performs
+                    semantic analysis on the fetched data and then inserts the
+                    analyzed data into the database. The front-end web will
+                    present articles based on users' selected category. The
+                    back-end server is responsible for querying the database and
+                    providing the front-end with queried news data.
                   </p>
                   <hr class="d-none d-lg-block mb-0 ml-0" />
                 </div>
@@ -269,10 +274,11 @@
                 >
                   <h4 class="text-white">Model (Unfinished)</h4>
                   <p class="mb-0 text-white-50">
-                    Patients’ chest X-ray images are uploaded and stored on IBM
-                    Cloud HIPAA-compliant object storage. The Radiologist Review
-                    Dashboard is built in PowerApps, of which the backend
-                    database is hosted on Azure SQL server.
+                    The three models developed for ChestX.ai employ
+                    state-of-the-art DenseNet-121 convolutional neural network
+                    (CNN) model architecture. Additionally, heatmaps for
+                    localized important regions are generated using
+                    Gradient-weighted Class Activation Mapping (Grad-CAM).
                   </p>
                   <hr class="d-none d-lg-block mb-0 ml-0" />
                 </div>
@@ -343,11 +349,13 @@
               Institute
             </p>
             <p>
-              • Parsed JSON data from RESTful API and built NLP content-based
-              recommender
+              • Developed an NLP content-based recommender with the data fetched from RESTful API
             </p>
             <p>
-              • Communicated with web developer and provided needed JSON data
+              • Performed data conversion to JSON format
+            </p>
+            <p>
+              • Output the processed data to the software developer for building the front-end web
             </p>
             <br />
             <a
