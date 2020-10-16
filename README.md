@@ -24,8 +24,6 @@ With INRS, you no longer need to visit separate websites for the latest content.
 
 ![](https://i.imgur.com/koA0I1b.png)
 
-![](https://i.imgur.com/koA0I1b.png)
-
 ## License
 
 MIT © 2020 Bing-Jie Hsieh
