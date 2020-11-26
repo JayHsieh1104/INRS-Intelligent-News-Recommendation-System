@@ -11,7 +11,7 @@ const pool = new Pool({
 })
 
 const getNewsByCategory = (request, response) => {
-    const category = request.params.category
+    const category = request.params._category
 
     pool.query('SELECT * FROM public.articles WHERE category = $1', [category], (error, results) => {
         if (error) {
@@ -21,6 +21,18 @@ const getNewsByCategory = (request, response) => {
     })
 }
 
+const getNewsByKeyword = (request, response) => {
+    const keyword = "%" + request.params._keyword + "%";
+
+    pool.query('SELECT * FROM public.articles WHERE title LIKE $1', [keyword], (error, results) => {
+        if (error) {
+            throw error
+        }
+        response.status(200).json(results.rows)
+    })
+}
+
 module.exports = {
     getNewsByCategory,
+    getNewsByKeyword
 }

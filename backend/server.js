@@ -27,7 +27,9 @@ app.get('/', (request, response) => {
     response.json({ info: 'Express.js server is running!' })
 })
 
-app.get('/news/:category', db.getNewsByCategory)
+app.get('/news/category/:_category', db.getNewsByCategory)
+
+app.get('/news/keyword/:_keyword', db.getNewsByKeyword)
 
 app.listen(PORT, () => {
     console.log(`App running on port ${PORT}.`)
