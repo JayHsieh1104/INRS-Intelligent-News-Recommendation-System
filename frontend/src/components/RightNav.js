@@ -1,4 +1,5 @@
 import React from "react";
+import Link from "react-router-dom/Link";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -10,9 +11,17 @@ class RightNav extends React.Component {
     this.state = {
       _error: null,
       _isLoaded: false,
-      _stockData: null,
+      _stockData: null
     };
     this.fetchStockData = this.fetchStockData.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+  }
+
+  onFormSubmit(e) {
+    const keyword = document.getElementById("keyword");
+    this.props.functionCallFromParent(keyword.value);
+    const searchBar = document.getElementById("searchBar");
+    searchBar.reset();
   }
 
   fetchStockData() {
@@ -46,13 +55,21 @@ class RightNav extends React.Component {
       return (
         <div>
           <h3>Looking for certain news?</h3>
-          <Form inline style={{ marginBottom: "10px" }}>
+          <Form
+            id="searchBar"
+            onSubmit={this.onFormSubmit}
+            inline
+            style={{ marginBottom: "10px" }}
+          >
             <FormControl
               type="text"
-              placeholder="Search for topics"
+              id="keyword"
+              placeholder="Enter your keyword here..."
               className="mr-sm-2"
             />
-            <Button variant="outline-primary">Search</Button>
+            <Button type="submit" variant="outline-primary" as={Link} to="/SearchResult">
+              Search
+            </Button>
           </Form>
           <Card>
             <Card.Header as="h5">Stock</Card.Header>
@@ -69,7 +86,7 @@ class RightNav extends React.Component {
           <Form inline style={{ marginBottom: "10px" }}>
             <FormControl
               type="text"
-              placeholder="Search for topics"
+              placeholder="Enter your keyword here..."
               className="mr-sm-2"
             />
             <Button variant="outline-primary">Search</Button>
@@ -100,13 +117,20 @@ class RightNav extends React.Component {
       return (
         <div>
           <h3>Looking for certain news?</h3>
-          <Form inline style={{ marginBottom: "10px" }}>
+          <Form
+            id="searchBar"
+            inline
+            style={{ marginBottom: "10px" }}
+          >
             <FormControl
               type="text"
-              placeholder="Search for topics"
+              id="keyword"
+              placeholder="Enter your keyword here..."
               className="mr-sm-2"
             />
-            <Button variant="outline-primary">Search</Button>
+            <Button type="submit" variant="outline-primary" onClick={this.onFormSubmit} as={Link} to="/SearchResult" >
+              Search
+            </Button>
           </Form>
           <Card>
             <Card.Header as="h5">Market Indexes</Card.Header>
@@ -114,15 +138,18 @@ class RightNav extends React.Component {
               <Card.Text>Updated time: {formattedTime}</Card.Text>
               <Card.Title>Dow Jones</Card.Title>
               <Card.Text>
-                • {_stockData[0].price} / {_stockData[0].change}{" "} / {_stockData[0].changesPercentage} %
+                • {_stockData[0].price} / {_stockData[0].change} /{" "}
+                {_stockData[0].changesPercentage} %
               </Card.Text>
               <Card.Title>S&P 500</Card.Title>
               <Card.Text>
-                • {_stockData[1].price} / {_stockData[1].change}{" "} / {_stockData[1].changesPercentage}%
+                • {_stockData[1].price} / {_stockData[1].change} /{" "}
+                {_stockData[1].changesPercentage}%
               </Card.Text>
               <Card.Title>NASDAQ</Card.Title>
               <Card.Text>
-                • {_stockData[2].price} / {_stockData[2].change}{" "} / {_stockData[2].changesPercentage}%
+                • {_stockData[2].price} / {_stockData[2].change} /{" "}
+                {_stockData[2].changesPercentage}%
               </Card.Text>
             </Card.Body>
             <Card.Header as="h5">

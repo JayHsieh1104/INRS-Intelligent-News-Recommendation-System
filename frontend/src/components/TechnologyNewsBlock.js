@@ -14,7 +14,7 @@ class TechnologyNewsBlock extends React.Component {
       }
     
       fetchNewsData() {
-        fetch(config.backend_url_base + "/news/technology")
+        fetch(config.backend_url_base + "/news/category/technology")
           .then((res) => res.json())
           .then(
             (jsonObj) => {

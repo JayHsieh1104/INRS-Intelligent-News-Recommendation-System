@@ -14,7 +14,7 @@ class EntertainmentNewsBlock extends React.Component {
       }
     
       fetchNewsData() {
-        fetch(config.backend_url_base + "/news/entertainment")
+        fetch(config.backend_url_base + "/news/category/entertainment")
           .then((res) => res.json())
           .then(
             (jsonObj) => {

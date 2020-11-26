@@ -14,7 +14,7 @@ class HealthNewsBlock extends React.Component {
       }
     
       fetchNewsData() {
-        fetch(config.backend_url_base + "/news/health")
+        fetch(config.backend_url_base + "/news/category/health")
           .then((res) => res.json())
           .then(
             (jsonObj) => {

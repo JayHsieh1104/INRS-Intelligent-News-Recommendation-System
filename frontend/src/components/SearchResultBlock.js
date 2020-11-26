@@ -1,20 +1,21 @@
 import React from "react";
 import NewsCard from "./NewsCard.js";
-import "./TopHeadlinesBlock.css";
+
+import "./SearchResultBlock.css";
 const config = require("../../config.json");
 
-class TopHeadlinesBlock extends React.Component {
+class SearchResultBlock extends React.Component {
   constructor(props) {
     super();
     this.state = {
       _error: null,
       _isLoaded: false,
-      _articles: null,
+      _articles: null
     };
   }
 
-  fetchNewsData() {
-    fetch(config.backend_url_base + "/news/category/general")
+  fetchNewsData(_searching_keyword) {
+    fetch(config.backend_url_base + "/news/keyword/" + _searching_keyword)
       .then((res) => res.json())
       .then(
         (jsonObj) => {
@@ -33,7 +34,13 @@ class TopHeadlinesBlock extends React.Component {
   }
 
   componentDidMount() {
-    this.fetchNewsData();
+    this.fetchNewsData(this.props._searching_keyword);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props._searching_keyword !== prevProps._searching_keyword) {
+      this.fetchNewsData(this.props._searching_keyword);
+    }
   }
 
   render() {
@@ -41,21 +48,23 @@ class TopHeadlinesBlock extends React.Component {
     if (_error) {
       return (
         <div className="BlockTitle">
-          <p>Top Headlines</p>
+          <p>Search for new related to "{this.props._searching_keyword}"</p>
           <div>Error: {_error.message}</div>
         </div>
       );
     } else if (!_isLoaded) {
       return (
         <div className="BlockTitle">
-          <p>Top Headlines</p>
+          <p>Search for new related to "{this.props._searching_keyword}"</p>
           <div>Loading...</div>
         </div>
-      )
+      );
     } else {
       return (
         <div>
-          <div className="BlockTitle">Top Headlines</div>
+          <div className="BlockTitle">
+            Search for new related to "{this.props._searching_keyword}"
+          </div>
           {_articles.map((_article) => (
             <NewsCard article={_article} />
           ))}
@@ -65,4 +74,4 @@ class TopHeadlinesBlock extends React.Component {
   }
 }
 
-export default TopHeadlinesBlock;
+export default SearchResultBlock;

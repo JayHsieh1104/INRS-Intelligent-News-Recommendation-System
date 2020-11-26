@@ -14,7 +14,7 @@ class BusinessNewsBlock extends React.Component {
       }
     
       fetchNewsData() {
-        fetch(config.backend_url_base + "/news/business")
+        fetch(config.backend_url_base + "/news/category/business")
           .then((res) => res.json())
           .then(
             (jsonObj) => {

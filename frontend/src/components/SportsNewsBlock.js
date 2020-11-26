@@ -14,7 +14,7 @@ class SportsNewsBlock extends React.Component {
       }
     
       fetchNewsData() {
-        fetch(config.backend_url_base + "/news/sports")
+        fetch(config.backend_url_base + "/news/category/sports")
           .then((res) => res.json())
           .then(
             (jsonObj) => {
