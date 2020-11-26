@@ -48,14 +48,14 @@ class SearchResultBlock extends React.Component {
     if (_error) {
       return (
         <div className="BlockTitle">
-          <p>Search for new related to "{this.props._searching_keyword}"</p>
+          <p>Search for news related to "{this.props._searching_keyword}"</p>
           <div>Error: {_error.message}</div>
         </div>
       );
     } else if (!_isLoaded) {
       return (
         <div className="BlockTitle">
-          <p>Search for new related to "{this.props._searching_keyword}"</p>
+          <p>Search for news related to "{this.props._searching_keyword}"</p>
           <div>Loading...</div>
         </div>
       );
@@ -63,7 +63,7 @@ class SearchResultBlock extends React.Component {
       return (
         <div>
           <div className="BlockTitle">
-            Search for new related to "{this.props._searching_keyword}"
+            Search for news related to "{this.props._searching_keyword}"
           </div>
           {_articles.map((_article) => (
             <NewsCard article={_article} />
