@@ -10129,6 +10129,7 @@ img::-moz-selection {
   }
 }
 header.masthead {
+  height: 100%;
   padding-top: 10.5rem;
   padding-bottom: 6rem;
   text-align: center;
