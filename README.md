@@ -1,6 +1,6 @@
 # INRS - Intelligent News Recommendation System
 
-[Click me to enter the introduction page](https://jayhsieh1104.github.io/INRS-Intelligent-News-Recommendation-System/)
+[Introduction Page](https://jayhsieh1104.github.io/INRS-Intelligent-News-Recommendation-System/)
 
 Nowadays, an increasing number of newspaper readers migrate to online sources, where users can actively seek information from various platforms. However, overwhelming information and news actually hinder people from staying well informed. This fact motivated us to build INRS, a news aggregator consolidating and organizing content from pre-selected reliable news sites.
 
@@ -15,14 +15,19 @@ With INRS, you no longer need to visit separate websites for the latest content.
   - [License](#license)
 
 ## Guide
+[Explore INRS Now](#license)
 
-[Explore INRS Now](https://inrs-frontend.wl.r.appspot.com/)
+![](https://i.imgur.com/D7Lp1ti.jpg)
 
-![](https://i.imgur.com/RdCwiIQ.jpg)
+![](https://i.imgur.com/Idp3pFP.jpg)
+
+![](https://i.imgur.com/m0O7RJ9.jpg)
+
+![](https://i.imgur.com/YOm6nPx.jpg)
 
 ## System Architecture
 
-![](https://i.imgur.com/koA0I1b.png)
+![](https://i.imgur.com/Gq8i3EP.png)
 
 ## License
 
